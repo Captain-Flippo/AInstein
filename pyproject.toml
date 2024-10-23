@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "AInstein"
+version = "0.1.0"
+description = "An example chat bot implementation."
+authors = ["Captain-Flippo"]
+license = "Proprietary"
+packages = [{ include = "src"}, ]
+include = ["src/chatbot/res/*"]
+
+
+[tool.poetry.dependencies]
+python = ">3.10, <3.12"
+PyYAML = "^6.0"
+langchain = "^0.0.305"
+qdrant-client = "^1.5.4"
+pypdf = "^3.16.2"
+python-dotenv = "^1.0.0"
+openai = "^0.28.1"
+tiktoken = "^0.5.1"
+streamlit = "^1.27.2"
+transformers = "^4.34.0"
+pymupdf = "^1.23.6"
+seaborn = "^0.13.0"
+scikit-learn = "^1.3.2"
+nltk = "^3.8.1"
+rouge = "^1.0.1"
+sentence-transformers = "^2.2.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10"
+pre-commit = "^2.20"
+pytest = "^7.2"
+pytest-cov = "^4.0"
+jupyterlab = "^4.0.9"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+ignore = ["F401"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
