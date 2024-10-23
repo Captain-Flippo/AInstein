@@ -9,7 +9,7 @@ import yaml
 
 logger = logging.getLogger("AInstein")
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 
 def get_resource_string(path: str, decode=True) -> Union[str, bytes]:
