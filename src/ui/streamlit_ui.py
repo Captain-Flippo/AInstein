@@ -1,10 +1,10 @@
 import streamlit as st
 
-from llm.chat import get_chat_generator
-from llm.embed import get_embedder
-from etl.model import Document
-from etl.qdrant import instantiate_qclient, search_documents
-from util.util import PROJECT_ROOT, load_config
+from .src.llm.chat import get_chat_generator
+from .src.llm.embed import get_embedder
+from .src.etl.model import Document
+from .src.etl.qdrant import instantiate_qclient, search_documents
+from .src.util.util import PROJECT_ROOT, load_config
 
 config = load_config(PROJECT_ROOT / "config" / "config.yml")
 
