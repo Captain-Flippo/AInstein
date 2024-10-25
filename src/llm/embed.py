@@ -4,33 +4,32 @@ We will use this to embed the user's question and the document documents, by usi
 As you will see, we will import the get_embedder function from this module in the frontend file."""
 
 import logging
-import os
-from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
+from omegaconf import OmegaConf
+from langchain_openai import OpenAIEmbeddings
+from enum import Enum
 
 logger = logging.getLogger("AInstein")
+config = OmegaConf.load("config.yaml")
 
-def get_embedder(embedder_name: str) -> OpenAIEmbeddings:
-    """Obtain an instance of the OpenAIEmbeddings class - a wrapper around the OpenAI API embedding functionality.
+
+class OpenAIEmbedderSelection(Enum):
+    """A selection of OpenAI embedders to choose from."""
+    
+    LARGE = "text-embedding-3-large"
+    SMALL = "text-embedding-3-small"  # Add other embedders as needed
+
+
+def get_embedder(embedder: OpenAIEmbedderSelection.value) -> OpenAIEmbeddings:
+    """Creates an OpenAIEmbeddings object.
 
     Args:
-        embedder_name (str): type of embedder to use
-
-    Raises:
-        ValueError: if the embedder_name is not a valid embedder name
+        embedder (OpenAIEmbedderSelection.value): Can be one of the OpenAIEmbedderSelection values.
 
     Returns:
-        OpenAIEmbeddings: an instance of the OpenAIEmbeddings class
+        OpenAIEmbeddings: An OpenAIEmbeddings object.
     """
-    load_dotenv()
-
-    if embedder_name == "text-embedding-ada-002":
-        return OpenAIEmbeddings(
-            model=embedder_name,
-            deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME_EMBED"),
-            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            openai_api_base=os.getenv("AZURE_OPENAI_API_BASE"),
-            openai_api_type="azure",
-        )
-    else:
-        raise ValueError(f"{embedder_name} is not a valid embedder name")
+    return OpenAIEmbeddings(
+        model=embedder,
+        api_key=config.api_key,
+    )
+    
