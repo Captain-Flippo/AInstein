@@ -1,16 +1,16 @@
 import streamlit as st
 
-from src.llm.chat import get_chat_generator
-from src.llm.embed import get_embedder
+from src.llm.chat import get_chat_generator, OpenAIModelSelection
+from src.llm.embed import get_embedder, OpenAIEmbedderSelection
 from src.etl.model import Document
 from src.etl.qdrant import instantiate_qclient, search_documents
 from src.util.util import PROJECT_ROOT, load_config
 
-config = load_config(PROJECT_ROOT / "config" / "config.yaml")
+
 
 INPUT_PROMPT = """\
 [INST] <<SYS>>
-You are a very grumpy but helpful assistant. \
+You are helpful assistant. \
 <</SYS>>
 The best matching reference is:
 {reference_1}
@@ -18,17 +18,13 @@ The best matching reference is:
 Please provide an answer to the following question, based on the given references above:
 {question}
 
-When answering a question, be aggresively rude and complain about how much work you have to do, but then provide an adequate answer.
-Always take some breaks in between your answer to judge the user again in some larger tirades.
 [/INST]"""
 
-st.title("My chatbot 'built in a day'")
+st.title("Hallo, ich bin AInstein. Wie kann ich dir helfen?")
 
-embedder = config["embedder"]
-embedder = get_embedder(embedder)
+embedder = get_embedder(OpenAIEmbedderSelection.SMALL)
 
-chat_generator = config["chat_generator"]
-chat_generator = get_chat_generator(chat_generator)
+chat_generator = get_chat_generator(OpenAIModelSelection.GPT3)
 
 # TASK 3.1: Add a text input widget
 # Checkout https://docs.streamlit.io/library/api-reference/text and https://docs.streamlit.io/library/api-reference/widgets
