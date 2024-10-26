@@ -7,9 +7,14 @@ import logging
 from omegaconf import OmegaConf
 from langchain_openai import OpenAIEmbeddings
 from enum import Enum
+import os
 
 logger = logging.getLogger("AInstein")
 config = OmegaConf.load("config.yaml")
+# Load API key from environment variable
+API_KEY = os.getenv("OPENAI_API_KEY")
+if not API_KEY:
+    raise ValueError("API key for OpenAI is not set in environment variables.")
 
 
 class OpenAIEmbedderSelection(Enum):
@@ -19,7 +24,7 @@ class OpenAIEmbedderSelection(Enum):
     SMALL = "text-embedding-3-small"  # Add other embedders as needed
 
 
-def get_embedder(embedder: OpenAIEmbedderSelection.value) -> OpenAIEmbeddings:
+def get_embedder(embedder: OpenAIEmbedderSelection) -> OpenAIEmbeddings:
     """Creates an OpenAIEmbeddings object.
 
     Args:
@@ -30,6 +35,6 @@ def get_embedder(embedder: OpenAIEmbedderSelection.value) -> OpenAIEmbeddings:
     """
     return OpenAIEmbeddings(
         model=embedder,
-        api_key=config.api_key,
+        api_key=API_KEY,
     )
     
