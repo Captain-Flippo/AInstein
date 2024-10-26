@@ -1,25 +1,29 @@
 """Here, we define the chat generator that we will use to generate responses to user queries."""
 
 import os
-from dotenv import load_dotenv
-from langchain.llms import AzureOpenAI
+from enum import Enum
+from logging import config
+from langchain_openai import OpenAI
+from omegaconf import OmegaConf
 
-load_dotenv()
+config = OmegaConf.load("config.yaml")
+print(config)
+# Load API key from environment variable
+API_KEY = os.getenv("OPENAI_API_KEY")
+if not API_KEY:
+    raise ValueError("API key for OpenAI is not set in environment variables.")
 
+class OpenAIModelSelection(Enum):
+    """A selection of OpenAI models to choose from."""
+    
+    GPT3 = "gpt-3.5-turbo"
+    GPT4 = "gpt-4.0-turbo"
 
-def get_chat_generator(model_name: str) -> AzureOpenAI:
-
-    load_dotenv()
-
-    if model_name == "gpt-35-turbo-instruct":
-        return AzureOpenAI(
-            model_name=model_name,
-            deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME_GEN_INSTRUCT"),
-            openai_api_base=os.getenv("AZURE_OPENAI_API_BASE"),
-            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-            openai_api_type="azure",
+def get_chat_generator(model_name: OpenAIModelSelection) -> OpenAI:
+    
+        return OpenAI(
+            model=model_name,
+            api_key=API_KEY,
+            temperature=float(config.llm.temperature),
+            top_p=float(config.llm.top_p),
         )
-
-    else:
-        raise ValueError(f"{model_name} is not a valid chat generator name")
