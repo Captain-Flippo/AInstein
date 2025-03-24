@@ -25,22 +25,22 @@ def get_resource_string(path: str, decode=True) -> Union[str, bytes]:
     return s.decode(errors="ignore") if decode else s
 
 
-def load_config(config_file: Union[str, Path]) -> Dict[str, Any]:
-    """
-    Load the config from the specified yaml file
+# def load_config(config_file: Union[str, Path]) -> Dict[str, Any]:
+#     """
+#     Load the config from the specified yaml file
 
-    :param config_file: path of the config file to load
-    :return: the parsed config as dictionary
-    """
-    with open(config_file, "r") as fp:
-        config = yaml.safe_load(fp)
+#     :param config_file: path of the config file to load
+#     :return: the parsed config as dictionary
+#     """
+#     with open(config_file, "r") as fp:
+#         config = yaml.safe_load(fp)
 
-    for data_path in config["paths"]["data"]:
-        config["paths"]["data"][data_path] = str(Path(config["paths"]["data"][data_path]))
+#     for data_path in config["paths"]["data"]:
+#         config["paths"]["data"][data_path] = str(Path(config["paths"]["data"][data_path]))
 
-    config["qdrant"]["storage_path"] = str(Path(config["qdrant"]["storage_path"]))
+#     config["qdrant"]["storage_path"] = str(Path(config["qdrant"]["storage_path"]))
 
-    return config
+#     return config
 
 
 def logging_setup(config: Dict):
